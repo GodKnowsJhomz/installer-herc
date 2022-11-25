@@ -52,12 +52,12 @@ echo ""
 
 
 echo "${BLUE}Step 3/${STEPS}:${NC} Installing MySQL Stuff"
-apt-get -qy install libaio1 libdbd-mysql-perl libdbi-perl libterm-readkey-perl libhtml-template-perl > /dev/null
+apt-get -qy install libaio1 libdbd-mariadb-perl libdbi-perl libterm-readkey-perl libhtml-template-perl > /dev/null
 export DEBIAN_FRONTEND=noninteractive 
-bash -c 'debconf-set-selections <<< "mysql-server mysql-server/root_password password ragnarok"'
-bash -c 'debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ragnarok"'
+bash -c 'debconf-set-selections <<< "mariadb-server mariadb-server/root_password password ragnarok"'
+bash -c 'debconf-set-selections <<< "mariadb-server mariadb-server/root_password_again password ragnarok"'
 
-apt-get -qy install mysql-server
+apt-get -qy install mariadb-server
 wget -q https://raw.githubusercontent.com/GodKnowsJhomz/installer-herc/main/msi.sh
 chmod +x msi.sh
 ./msi.sh
