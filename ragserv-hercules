@@ -91,7 +91,7 @@ echo ""
 
 echo "${BLUE}Step 6/${STEPS}:${NC} Installing Hercules specific packages"
 echo " * Installing git, make, g++"
-apt-get -qy install git make mysql-server libmysqlclient-dev gdb > /dev/null
+apt-get -qy install git make libmariadb-dev libmariadbclient-dev libmariadbclient-dev-compat gdb > /dev/null
 echo " * Installing Utilities"
 apt-get -qy install zlib1g-dev libpcre3-dev nano zip unzip zenity gcc g++ xterm > /dev/null
 echo ""
