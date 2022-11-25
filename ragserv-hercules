@@ -355,7 +355,7 @@ echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/map-
 echo "map_configuration: {" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 echo "	inter: {" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 echo "		userid: \"${USERID}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
-echo "		passwd: \"Hv46TmDkbg\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
+echo "		passwd: \"${HERCULESPASS}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 echo "		char_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 echo "		map_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 echo "	}" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
@@ -364,8 +364,8 @@ echo "}" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 touch /home/hercules/Desktop/hercules/conf/import/inter-server.conf
 echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
 echo "inter_configuration: {" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
-echo "	db_username: \"ragnarok\"" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
-echo "	db_password: \"Hv46TmDkbg\"" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
+echo "	db_username: \"${USERID}\"" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
+echo "	db_password: \"${HERCULESPASS}\"" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
 echo "	db_database: \"ragnarok\"" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
 echo "}" >> /home/hercules/Desktop/hercules/conf/import/inter-server.conf
 echo ""
