@@ -193,12 +193,13 @@ echo ""
 
 
 echo "${BLUE}Step 12/${STEPS}:${NC} Performing Initial Hercules Compile"
-echo "This step will take time.. please be patient"
-echo "You may see warnings here - this is normal"
+echo "Skipping Compilation."
+#echo "This step will take time.. please be patient"
+#echo "You may see warnings here - this is normal"
 cd /home/hercules/Desktop/hercules
-sudo -u hercules sh -c "./configure > /dev/null"
-sudo -u hercules sh -c "make sql plugins > /dev/null"
-sudo -u hercules sh -c "chmod a+x login-server && chmod a+x char-server && chmod a+x map-server"
+#sudo -u hercules sh -c "./configure > /dev/null"
+#sudo -u hercules sh -c "make sql plugins > /dev/null"
+#sudo -u hercules sh -c "chmod a+x login-server && chmod a+x char-server && chmod a+x map-server"
 echo ""
 
 
