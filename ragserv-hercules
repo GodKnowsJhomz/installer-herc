@@ -19,7 +19,7 @@ RAGSQLPASS=$(date +%s | sha256sum | base64 | head -c 10 ; echo)
 
 # URLs
 URL_HERC="https://board.herc.ws/"
-URL_HERCGIT="https://github.com/HerculesWS/Hercules.git"
+URL_HERCGIT="https://github.com/HerculesWS/Hercules"
 URL_FLUXGIT="https://github.com/HerculesWS/FluxCP"
 SERVER_IPLIST=$(ip addr|awk '/eth0/ && /inet/ {gsub(/\/[0-9][0-9]/,""); print $2}')
 SERVER_IP=$(echo $SERVER_IPLIST | cut -d ' ' -f 1 )
@@ -52,12 +52,12 @@ echo ""
 
 
 echo "${BLUE}Step 3/${STEPS}:${NC} Installing MySQL Stuff"
-apt-get -qy install libaio1 libdbd-mariadb-perl libdbi-perl libterm-readkey-perl libhtml-template-perl > /dev/null
+apt-get -qy install libaio1 libdbd-mysql-perl libdbi-perl libterm-readkey-perl libhtml-template-perl > /dev/null
 export DEBIAN_FRONTEND=noninteractive 
-bash -c 'debconf-set-selections <<< "mariadb-server mariadb-server/root_password password ragnarok"'
-bash -c 'debconf-set-selections <<< "mariadb-server mariadb-server/root_password_again password ragnarok"'
+bash -c 'debconf-set-selections <<< "mysql-server mysql-server/root_password password ragnarok"'
+bash -c 'debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ragnarok"'
 
-apt-get -qy install mariadb-server
+apt-get -qy install mysql-server
 wget -q https://raw.githubusercontent.com/GodKnowsJhomz/installer-herc/main/msi.sh
 chmod +x msi.sh
 ./msi.sh
@@ -91,7 +91,7 @@ echo ""
 
 echo "${BLUE}Step 6/${STEPS}:${NC} Installing Hercules specific packages"
 echo " * Installing git, make, g++"
-apt-get -qy install git make mysql-server libmysqlclient-dev > /dev/null
+apt-get -qy install git make mysql-server libmysqlclient-dev gdb > /dev/null
 echo " * Installing Utilities"
 apt-get -qy install zlib1g-dev libpcre3-dev nano zip unzip zenity gcc g++ xterm > /dev/null
 echo ""
@@ -339,25 +339,23 @@ cd /home/
 
 
 echo "${BLUE}Step 17/${STEPS}:${NC} Preparing auto-config import files"
-echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/char_conf.txt
-echo "userid: ${USERID}" >> /home/hercules/Desktop/hercules/conf/import/char_conf.txt
-echo "passwd: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/char_conf.txt
-echo "char_ip: ${SERVER_IP}" >> /home/hercules/Desktop/hercules/conf/import/char_conf.txt
-echo "login_ip: ${SERVER_IP}" >> /home/hercules/Desktop/hercules/conf/import/char_conf.txt
+cp -R /home/hercules/Desktop/hercules/conf/import-tmpl /home/hercules/Desktop/hercules/conf/import
+echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/char-server.conf
+echo "userid: \"${USERID}\"" >> /home/hercules/Desktop/hercules/conf/import/char-server.conf
+echo "passwd: \"Hv46TmDkbg\"" >> /home/hercules/Desktop/hercules/conf/import/char-server.conf
+echo "char_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/char-server.conf
+echo "login_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/char-server.conf
 
-echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/map_conf.txt
-echo "userid: ${USERID}" >> /home/hercules/Desktop/hercules/conf/import/map_conf.txt
-echo "passwd: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/map_conf.txt
-echo "char_ip: ${SERVER_IP}" >> /home/hercules/Desktop/hercules/conf/import/map_conf.txt
-echo "map_ip: ${SERVER_IP}" >> /home/hercules/Desktop/hercules/conf/import/map_conf.txt
+echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
+echo "userid: \"${USERID}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
+echo "passwd: \"Hv46TmDkbg\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
+echo "char_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
+echo "map_ip: \"${SERVER_IP}\"" >> /home/hercules/Desktop/hercules/conf/import/map-server.conf
 
 echo "//${INSTALLER_NAME}\n" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "//use_sql_db: yes" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "login_server_pw: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "ipban_db_pw: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "char_server_pw: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "map_server_pw: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
-echo "log_db_pw: Hv46TmDkbg" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
+echo "db_username: \"ragnarok\"" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
+echo "db_password: \"Hv46TmDkbg\"" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
+echo "db_database: \"ragnarok\"" >> /home/hercules/Desktop/hercules/conf/import/inter_conf.txt
 echo ""
 
 touch /home/hercules/Desktop/Info.txt
@@ -428,7 +426,7 @@ echo "After FluxCP installation, full installer will be available via your site.
 echo ""
 echo "${BLUE}You can now login via VNC and click Start Hercules on the desktop.${NC}"
 echo "${YELLOW}*****************************************************************${NC}"
-rm /home/ragserv-herc
+rm /home/ragserv-hercules
 rm /home/google-chrome-stable_current_amd64.deb
 rm /home/createuser.zip
 exit 0
